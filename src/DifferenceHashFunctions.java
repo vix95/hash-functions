@@ -14,7 +14,7 @@ public class DifferenceHashFunctions {
             if (args.length > 0)
                 System.out.print("You shouldn't provide any arguments, type: java DifferenceHashFunctions\n");
 
-            ArrayList<String> hashList = readFHashFile();
+            ArrayList<String> hashList = readHashFile();
             if (hashList != null) {
                 printArrayList(hashList);
                 compareHashFunctions(hashList);
@@ -25,7 +25,7 @@ public class DifferenceHashFunctions {
         }
     }
 
-    private static ArrayList<String> readFHashFile() {
+    private static ArrayList<String> readHashFile() {
         Scanner scanner;
         try {
             File file = new File(files_path + "/hash.txt");
@@ -83,13 +83,13 @@ public class DifferenceHashFunctions {
     }
 
     private static String difference(String hash1, String hash2) {
-        String hash_binary_1 = hexToBinary(hash1);
-        String hash_binary_2 = hexToBinary(hash2);
+        String hash_binary_1 = hexToBinary(hash1).replaceAll("\\s", "");
+        String hash_binary_2 = hexToBinary(hash2).replaceAll("\\s", "");
 
-        int qty_of_bits = hash_binary_1.replaceAll("\\s", "").length();
+        int qty_of_bits = hash_binary_1.length();
         int number_of_diff = 0;
         for (int i = 0; i < qty_of_bits; i++) if (hash_binary_1.charAt(i) != hash_binary_2.charAt(i)) number_of_diff++;
-        int diff_percent = (int) (((float) number_of_diff / (float) qty_of_bits) * 100);
+        int diff_percent = Math.round(((float) number_of_diff / (float) qty_of_bits) * 100);
 
         return "Liczba bitów różniąca wyniki: " + number_of_diff
                 + " tj. " + diff_percent + "% z " + qty_of_bits + "\n";
